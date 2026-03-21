@@ -46,3 +46,12 @@ def run_analysis(project_root: Path, settings: ExperimentSettings) -> None:
 
     if selected_pipe is not None:
         print_coefficients("ratings_plus_l1", top_nonzero_coefficients(selected_pipe))
+
+
+def export_model_data(project_root: Path, output_path: Path | None = None) -> Path:
+    warnings.filterwarnings("ignore")
+
+    resolved_output = output_path or (project_root / "data.csv")
+    df = TournamentFeatureBuilder(project_root / "data").build()
+    df.to_csv(resolved_output, index=False)
+    return resolved_output
